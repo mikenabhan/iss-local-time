@@ -1,0 +1,166 @@
+[
+    {
+        "id": "1d7694b9.3d1913",
+        "type": "tab",
+        "label": "ISS Local Time",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "9c6c66d2.5f826",
+        "type": "server-state-changed",
+        "z": "1d7694b9.3d1913",
+        "name": "ISS Local Time 24",
+        "server": "a7f65844.c2f878",
+        "version": 1,
+        "entityidfilter": "sensor.iss_local_time",
+        "entityidfiltertype": "exact",
+        "outputinitially": false,
+        "state_type": "str",
+        "haltifstate": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "outputs": 1,
+        "output_only_on_state_change": true,
+        "x": 150,
+        "y": 160,
+        "wires": [
+            [
+                "211fac4d.0f4ce4"
+            ]
+        ]
+    },
+    {
+        "id": "e7db8cd7.6ada18",
+        "type": "dweetio out",
+        "z": "1d7694b9.3d1913",
+        "thing": "dweet-topic-goes-here-notreal24",
+        "name": "",
+        "x": 660,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "931e4ab7.7e5f3",
+        "type": "debug",
+        "z": "1d7694b9.3d1913",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1110,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "194c23f8.59ec64",
+        "type": "mqtt out",
+        "z": "1d7694b9.3d1913",
+        "name": "post to mosquitto public",
+        "topic": "insert-mqtt-topic-here",
+        "qos": "0",
+        "retain": "true",
+        "broker": "f27861a6.2cf54",
+        "x": 710,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e8fb32ee.a9d468",
+        "type": "mqtt in",
+        "z": "1d7694b9.3d1913",
+        "name": "public topic",
+        "topic": "insert-mqtt-topic-here",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "f27861a6.2cf54",
+        "x": 910,
+        "y": 200,
+        "wires": [
+            [
+                "931e4ab7.7e5f3"
+            ]
+        ]
+    },
+    {
+        "id": "d4e46d73.6c3dd",
+        "type": "inject",
+        "z": "1d7694b9.3d1913",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 260,
+        "y": 280,
+        "wires": [
+            [
+                "194c23f8.59ec64"
+            ]
+        ]
+    },
+    {
+        "id": "211fac4d.0f4ce4",
+        "type": "moment",
+        "z": "1d7694b9.3d1913",
+        "name": "",
+        "topic": "",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "America/Denver",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "YYYY-MM-D HH:mm",
+        "locale": "C",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "America/Denver",
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "e7db8cd7.6ada18",
+                "194c23f8.59ec64"
+            ]
+        ]
+    },
+    {
+        "id": "a7f65844.c2f878",
+        "type": "server",
+        "z": "",
+        "name": "Home Assistant",
+        "legacy": false,
+        "hassio": true,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true
+    },
+    {
+        "id": "f27861a6.2cf54",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "test.mosquitto.org",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "clockpost",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
