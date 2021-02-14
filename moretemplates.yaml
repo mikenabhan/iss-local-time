@@ -1,0 +1,50 @@
+  ## ISS Clock
+  - platform: template
+    sensors:
+      iss_longitude:
+        friendly_name: "ISS Longitude"
+        unit_of_measurement: 'degrees'
+        value_template: "{{ state_attr('binary_sensor.iss', 'long') }}"
+
+  - platform: template
+    sensors:
+      iss_minute_offset:
+        friendly_name: "ISS Minute Offset"
+        unit_of_measurement: 'minutes'
+        value_template: "{{(state_attr('binary_sensor.iss', 'long')|float ) * 4}}"
+  - platform: template
+    sensors:
+      iss_degrees:
+        friendly_name: "ISS Degrees"
+        unit_of_measurement: 'degrees'
+        value_template: >-
+          {%- if state_attr('binary_sensor.iss', 'long')|float <0 -%}
+          {{ 360+ state_attr('binary_sensor.iss', 'long')|float }}
+          {%- else -%}
+          {{state_attr('binary_sensor.iss', 'long')|float}}
+          {%- endif -%}
+  - platform: template
+    sensors:
+      iss_minutes:
+        friendly_name: "ISS Minutes"
+        unit_of_measurement: 'minutes'
+        value_template: "{{ states.sensor.iss_degrees.state|float * 4 }}"
+  - platform: template
+    sensors:
+      iss_hours:
+        friendly_name: "ISS Hours"
+        unit_of_measurement: 'hours'
+        value_template: "{{ (states.sensor.iss_degrees.state|float * 4)/60 }}"
+  - platform: template
+    sensors:
+      iss_local_time:
+        friendly_name: "ISS Local Time"
+#        unit_of_measurement: 'hours'
+        value_template: "{{(as_timestamp(utcnow())+(7*60*60)+ (states('sensor.iss_minute_offset')|float *60))|timestamp_custom('%I:%M %p') }}"    
+  - platform: template
+    sensors:
+      iss_local_time_24:
+        friendly_name: "ISS Local Time 24"
+#        unit_of_measurement: 'hours'
+        value_template: "{{(as_timestamp(utcnow())+(7*60*60)+ (states('sensor.iss_minute_offset')|float *60))|timestamp_custom('%I:%M') }}" 
+###END ISS CLOCK###
